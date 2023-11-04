@@ -15,6 +15,8 @@ class Game:
                     running = False
 
             screen.fill("palegreen2")
+            pygame.draw.rect(screen, "white", (32, 32, 32, 32))
+
             pygame.display.flip()
             clock.tick(60)
 
