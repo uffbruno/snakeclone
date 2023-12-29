@@ -1,22 +1,23 @@
 import pygame
 from enum import Enum, auto
 
+
 class SnakeDirection(Enum):
     SD_LEFT = auto()
     SD_UP = auto()
     SD_RIGHT = auto()
     SD_DOWN = auto()
 
+
 class Snake:
 
     def __init__(self, position: pygame.Vector2):
         self.pos = position
-        self.size = pygame.Vector2(40, 40)
+        self.size = pygame.Vector2(32, 32)
         self.head = pygame.Rect(self.pos, self.size)
         self.movement_delay = 30
         self.delay_left = self.movement_delay
         self.direction = SnakeDirection.SD_LEFT
-
 
     def draw(self, display: pygame.Surface):
         pygame.draw.rect(display, "white", self.head)
@@ -58,4 +59,3 @@ class Snake:
         self.head.y += self.head.height * col_offset
 
         self.delay_left = self.movement_delay
-
