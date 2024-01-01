@@ -11,21 +11,26 @@ class MapObject(Enum):
     DANGER = 'D'
 
 
+class MapCell:
+    def __init__(self, row: int, col: int):
+        self.row = row
+        self.col = col
+
+
 class Map:
     def __init__(self):
         self.max_rows = 20
         self.max_columns = 20
-        self.snake_row = 0
-        self.snake_col = 0
+        self.snake = MapCell(0, 0)
 
         self.obj_map = {
-                   MapObject.NOTHING: "black",
-                   MapObject.SNAKE: "white",
-                   MapObject.FOOD: "pink",
-                   MapObject.WALL: "brown",
-                   MapObject.TRAP: "black",
-                   MapObject.DANGER: "black"
-                  }
+            MapObject.NOTHING: "black",
+            MapObject.SNAKE: "white",
+            MapObject.FOOD: "pink",
+            MapObject.WALL: "brown",
+            MapObject.TRAP: "black",
+            MapObject.DANGER: "black"
+        }
 
         self.objects = []
         for i in range(self.max_rows * self.max_columns):
@@ -34,13 +39,13 @@ class Map:
         self.set(5, 5, MapObject.WALL)
         self.set(14, 10, MapObject.FOOD)
 
-    def set(self, row: int, col: int, obj: MapObject):
+    def set(self, row: int, col: int, obj: MapObject) -> object:
         self.objects[row * self.max_columns + col] = obj
 
     def get(self, row: int, col: int):
         return self.objects[row * self.max_columns + col]
 
-    def draw(self, display: pygame.Surface):
+    def draw(self, display: pygame.Surface) -> object:
         cell_dimension = 32
         pos_x = (display.get_width() - self.max_columns * cell_dimension) / 2
         pos_y = (display.get_height() - self.max_rows * cell_dimension) / 2
@@ -53,5 +58,3 @@ class Map:
 
             pos_x = (display.get_width() - self.max_columns * cell_dimension) / 2
             pos_y += cell_dimension
-
-

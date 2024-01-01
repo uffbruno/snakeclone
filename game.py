@@ -1,7 +1,7 @@
 import pygame
 
 from snake import Snake
-from map import Map
+from map import Map, MapCell
 
 
 class Game:
@@ -18,8 +18,8 @@ class Game:
         running = True
         dt = 0
 
-        player = Snake(pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2))
-        map = Map()
+        player = Snake(MapCell(7, 7), 3)
+        levelMap = Map()
 
         while running:
             for event in pygame.event.get():
@@ -33,11 +33,8 @@ class Game:
             if keys[pygame.K_ESCAPE]:
                 running = False
 
-            map.draw(screen)
-
-            player.update()
-            player.draw(screen)
-
+            player.update(levelMap)
+            levelMap.draw(screen)
 
             pygame.display.flip()
             dt = clock.tick(60) / 1000
