@@ -2,6 +2,7 @@ import pygame
 from enum import Enum, auto
 from collections import deque
 from map import Map, MapObject, MapCell
+from utilities import Utilities
 
 
 class SnakeDirection(Enum):
@@ -72,8 +73,9 @@ class Snake:
             return
 
         self.body.append(MapCell(self.head.row, self.head.col))
-        new_row = self.head.row + row_offset
-        new_col = self.head.col + col_offset
+        new_row = Utilities.correct_pos(self.head.row + row_offset, levelmap.max_rows)
+        new_col = Utilities.correct_pos(self.head.col + col_offset, levelmap.max_columns)
+        print(self.head.row, self.head.col, new_row, new_col)
 
         obj = levelmap.get(new_row, new_col)
         print(obj)
