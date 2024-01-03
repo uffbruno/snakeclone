@@ -20,25 +20,36 @@ class Snake:
         self.delay_left = self.movement_delay
         self.direction = SnakeDirection.SD_RIGHT
 
-        self.head = position
-        self.tail = position
+        self.head = MapCell(position.row, position.col)
+        self.tail = MapCell(position.row, position.col)
         self.body = deque()
         if initial_size > 2:
             for i in range(initial_size - 2):
-                self.body.append(position)
+                self.body.append(MapCell(position.row, position.col))
 
     def update(self, levelMap: Map):
 
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and self.direction != SnakeDirection.SD_DOWN \
+                and self.direction != SnakeDirection.SD_UP:
             self.direction = SnakeDirection.SD_UP
-        if keys[pygame.K_a]:
+            self.delay_left = 2
+
+        if keys[pygame.K_a] and self.direction != SnakeDirection.SD_RIGHT \
+                and self.direction != SnakeDirection.SD_LEFT:
             self.direction = SnakeDirection.SD_LEFT
-        if keys[pygame.K_s]:
+            self.delay_left = 2
+
+        if keys[pygame.K_s] and self.direction != SnakeDirection.SD_DOWN \
+                and self.direction != SnakeDirection.SD_UP:
             self.direction = SnakeDirection.SD_DOWN
-        if keys[pygame.K_d]:
+            self.delay_left = 2
+
+        if keys[pygame.K_d] and self.direction != SnakeDirection.SD_RIGHT \
+                and self.direction != SnakeDirection.SD_LEFT:
             self.direction = SnakeDirection.SD_RIGHT
+            self.delay_left = 2
 
         self.move(levelMap)
 
@@ -64,12 +75,14 @@ class Snake:
         new_row = self.head.row + row_offset
         new_col = self.head.col + col_offset
 
-        # print(new_row, new_col)
+        obj = levelmap.get(new_row, new_col)
+        print(obj)
 
         self.old_tail = MapCell(self.tail.row, self.tail.col)
 
-        tail = self.body.popleft()
-        self.tail = MapCell(tail.row, tail.col)
+        if obj != MapObject.FOOD:
+            tail = self.body.popleft()
+            self.tail = MapCell(tail.row, tail.col)
 
         self.head.row = new_row
         self.head.col = new_col
@@ -87,5 +100,3 @@ class Snake:
         levelMap.set(self.tail.row, self.tail.col, MapObject.SNAKE)
 
         levelMap.set(self.old_tail.row, self.old_tail.col, MapObject.NOTHING)
-
-        print(self.tail.row, self.tail.col, self.old_tail.row, self.old_tail.col)
