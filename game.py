@@ -1,19 +1,26 @@
 import pygame
 
+from gamescreen import GameState
 from snake import Snake
+from snakescreen import snakescreen
 from map import Map, MapCell
 
 
 class Game:
 
     def __init__(self):
-        pass
-
-    @staticmethod
-    def run():
         pygame.init()
 
-        screen = pygame.display.set_mode((640, 640))
+        self.screen = pygame.display.set_mode((640, 640))
+
+        self.screens = {
+            GameState.PLAYING: snakescreen(self.screen),
+        }
+
+        self.currentState = GameState.PLAYING
+
+    def run(self):
+
         clock = pygame.time.Clock()
         running = True
         dt = 0
@@ -26,15 +33,16 @@ class Game:
                 if event.type == pygame.QUIT:
                     running = False
 
-            screen.fill("palegreen2")
+            self.screen.fill("palegreen2")
 
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_ESCAPE]:
                 running = False
 
-            player.update(levelMap)
-            levelMap.draw(screen)
+            currentScreen = self.screens[self.currentState]
+            currentScreen.update()
+            currentScreen.draw()
 
             pygame.display.flip()
             dt = clock.tick(60) / 1000

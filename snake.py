@@ -14,7 +14,7 @@ class SnakeDirection(Enum):
 
 class Snake:
 
-    def __init__(self, position: MapCell, initial_size: int):
+    def __init__(self, position: MapCell, initial_size: int) -> object:
         self.old_tail = position
         self.size = initial_size
         self.movement_delay = 20
