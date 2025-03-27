@@ -32,7 +32,7 @@ class gamescreen:
         pass
 
     @abstractmethod
-    def update(self):
+    def update(self) -> GameState:
         pass
 
     @abstractmethod

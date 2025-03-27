@@ -3,6 +3,7 @@ import pygame
 from gamescreen import GameState
 from snake import Snake
 from snakescreen import snakescreen
+from gameoverscreen import gameoverscreen
 from map import Map, MapCell
 
 
@@ -10,11 +11,21 @@ class Game:
 
     def __init__(self):
         pygame.init()
+        pygame.font.init()
 
         self.screen = pygame.display.set_mode((640, 640))
 
         self.screens = {
+            GameState.INITIAL_SCREEN: None,
+            GameState.OPTIONS_SCREEN: None,
             GameState.PLAYING: snakescreen(self.screen),
+            GameState.PLAYER_LOST: None,
+            GameState.LEVEL_CLEAR: None,
+            GameState.GAME_OVER: gameoverscreen(self.screen),
+            GameState.CONGRATS: None,
+            GameState.ENDING_SCREEN: None,
+            GameState.CREDITS: None,
+            GameState.EXIT: None,
         }
 
         self.currentState = GameState.PLAYING
@@ -40,8 +51,14 @@ class Game:
             if keys[pygame.K_ESCAPE]:
                 running = False
 
-            currentScreen = self.screens[self.currentState]
-            currentScreen.update()
+            if self.currentState != GameState.NO_CHANGE:
+                currentScreen = self.screens[self.currentState]
+
+                if currentScreen is None:
+                    running = False
+                    continue
+
+            self.currentState = currentScreen.update()
             currentScreen.draw()
 
             pygame.display.flip()

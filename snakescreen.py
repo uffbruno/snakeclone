@@ -25,8 +25,7 @@ class snakescreen(gamescreen):
             return GameState.GAME_OVER
 
         self.handle_input()
-        self.player.update(self.levelMap)
-        return GameState.NO_CHANGE
+        return self.player.update(self.levelMap)
 
     def draw(self):
         self.levelMap.draw(self.display)
@@ -34,7 +33,7 @@ class snakescreen(gamescreen):
     def handle_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
-            gameOver = True
+            self.gameOver = True
 
     def reset(self):
         pass

@@ -3,6 +3,7 @@ from enum import Enum, auto
 from collections import deque
 from map import Map, MapObject, MapCell
 from utilities import Utilities
+from gamescreen import GameState
 
 
 class SnakeDirection(Enum):
@@ -20,6 +21,7 @@ class Snake:
         self.movement_delay = 20
         self.delay_left = self.movement_delay
         self.direction = SnakeDirection.SD_RIGHT
+        self.is_dead = False
 
         self.head = MapCell(position.row, position.col)
         self.tail = MapCell(position.row, position.col)
@@ -54,6 +56,11 @@ class Snake:
 
         self.move(levelMap)
 
+        if self.is_dead:
+            return GameState.GAME_OVER
+
+        return GameState.NO_CHANGE
+
     def move(self, levelmap: Map):
 
         row_offset = 0
@@ -78,7 +85,8 @@ class Snake:
         print(self.head.row, self.head.col, new_row, new_col)
 
         obj = levelmap.get(new_row, new_col)
-        print(obj)
+
+        self.is_dead = (obj == MapObject.WALL or obj == MapObject.SNAKE)
 
         self.old_tail = MapCell(self.tail.row, self.tail.col)
 
