@@ -22,6 +22,7 @@ class Snake:
         self.delay_left = self.movement_delay
         self.direction = SnakeDirection.SD_RIGHT
         self.is_dead = False
+        self.ate_food = False
 
         self.head = MapCell(position.row, position.col)
         self.tail = MapCell(position.row, position.col)
@@ -82,15 +83,15 @@ class Snake:
         self.body.append(MapCell(self.head.row, self.head.col))
         new_row = Utilities.correct_pos(self.head.row + row_offset, levelmap.max_rows)
         new_col = Utilities.correct_pos(self.head.col + col_offset, levelmap.max_columns)
-        print(self.head.row, self.head.col, new_row, new_col)
 
         obj = levelmap.get(new_row, new_col)
 
         self.is_dead = (obj == MapObject.WALL or obj == MapObject.SNAKE)
+        self.ate_food = obj == MapObject.FOOD
 
         self.old_tail = MapCell(self.tail.row, self.tail.col)
 
-        if obj != MapObject.FOOD:
+        if not self.ate_food:
             tail = self.body.popleft()
             self.tail = MapCell(tail.row, tail.col)
 

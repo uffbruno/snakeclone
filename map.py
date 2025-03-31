@@ -36,13 +36,6 @@ class Map:
         for i in range(self.max_rows * self.max_columns):
             self.objects.append(MapObject.NOTHING)
 
-        self.set(5, 5, MapObject.WALL)
-        self.set(14, 10, MapObject.FOOD)
-        self.set(10, 10, MapObject.FOOD)
-        self.set(14, 12, MapObject.FOOD)
-        self.set(17, 11, MapObject.FOOD)
-        self.set(6, 6, MapObject.FOOD)
-
     def set(self, row: int, col: int, obj: MapObject) -> object:
         self.objects[row * self.max_columns + col] = obj
 

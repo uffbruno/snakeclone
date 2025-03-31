@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from gamescreen import GameState
 from snake import Snake
@@ -12,6 +13,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.font.init()
+        random.seed()
 
         self.screen = pygame.display.set_mode((640, 640))
 

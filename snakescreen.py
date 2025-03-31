@@ -1,28 +1,33 @@
 import pygame
+import random
+
 from pygame import Surface
 
 from gamescreen import gamescreen, GameState
-from map import Map, MapCell
+from map import Map, MapCell, MapObject
 from snake import Snake
 
 
 class snakescreen(gamescreen):
+
+    def init(self, display: Surface):
+        pass
 
     def __init__(self, display):
         self.player = Snake(MapCell(7, 7), 3)
         self.display = display
         self.levelMap = Map()
         self.gameOver = False
-
-    def init(self, display: Surface):
-        player = Snake(MapCell(7, 7), 3)
-        display = display
-        levelMap = Map()
-        gameOver = False
+        self.generate_new_food()
 
     def update(self) -> GameState:
         if self.gameOver:
             return GameState.GAME_OVER
+
+        if self.player.ate_food:
+            print("Ate food!")
+            self.generate_new_food()
+            self.player.ate_food = False
 
         self.handle_input()
         return self.player.update(self.levelMap)
@@ -36,4 +41,26 @@ class snakescreen(gamescreen):
             self.gameOver = True
 
     def reset(self):
-        pass
+        self.player = Snake(MapCell(7, 7), 3)
+        self.gameOver = False
+
+    def generate_new_food(self):
+        new_row = 0
+        new_col = 0
+
+        while True:
+            new_row = random.randint(0, self.levelMap.max_rows - 1)
+            new_col = random.randint(0, self.levelMap.max_columns - 1)
+            if self.valid_food_position(new_row, new_col):
+                break
+
+        self.levelMap.set(new_row, new_col, MapObject.FOOD)
+
+    def valid_food_position(self, row: int, col: int) -> bool:
+        obj = self.levelMap.get(row, col)
+
+        return obj == MapObject.NOTHING or obj == MapObject.DANGER
+
+
+
+
