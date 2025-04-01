@@ -2,10 +2,8 @@ import pygame
 import random
 
 from gamescreen import GameState
-from snake import Snake
 from snakescreen import snakescreen
 from gameoverscreen import gameoverscreen
-from map import Map, MapCell
 
 
 class Game:
@@ -33,13 +31,10 @@ class Game:
         self.currentState = GameState.PLAYING
 
     def run(self):
-
         clock = pygame.time.Clock()
         running = True
+        currentScreen = None
         dt = 0
-
-        player = Snake(MapCell(7, 7), 3)
-        levelMap = Map()
 
         while running:
             for event in pygame.event.get():
@@ -65,5 +60,7 @@ class Game:
 
             pygame.display.flip()
             dt = clock.tick(60) / 1000
+            print(dt)
 
         pygame.quit()
+

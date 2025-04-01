@@ -81,6 +81,7 @@ class Snake:
             return
 
         self.body.append(MapCell(self.head.row, self.head.col))
+
         new_row = Utilities.correct_pos(self.head.row + row_offset, levelmap.max_rows)
         new_col = Utilities.correct_pos(self.head.col + col_offset, levelmap.max_columns)
 

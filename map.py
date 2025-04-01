@@ -1,3 +1,4 @@
+import json
 from enum import Enum
 import pygame
 
@@ -36,13 +37,13 @@ class Map:
         for i in range(self.max_rows * self.max_columns):
             self.objects.append(MapObject.NOTHING)
 
-    def set(self, row: int, col: int, obj: MapObject) -> object:
+    def set(self, row: int, col: int, obj: MapObject):
         self.objects[row * self.max_columns + col] = obj
 
     def get(self, row: int, col: int) -> MapObject:
         return self.objects[row * self.max_columns + col]
 
-    def draw(self, display: pygame.Surface) -> object:
+    def draw(self, display: pygame.Surface):
         cell_dimension = 32
         pos_x = (display.get_width() - self.max_columns * cell_dimension) / 2
         pos_y = (display.get_height() - self.max_rows * cell_dimension) / 2
@@ -55,3 +56,26 @@ class Map:
 
             pos_x = (display.get_width() - self.max_columns * cell_dimension) / 2
             pos_y += cell_dimension
+
+    def load_level(self, filename: str):
+        with open(filename) as f:
+            json_obj = json.load(f)
+
+        layout = json_obj.get('level').get('layout')
+
+        self.objects.clear()
+
+        row_index = 0
+        col_index = 0
+
+        for row in layout:
+            col_index = 0
+            for obj in row:
+                self.objects.append(MapObject(obj))
+                if MapObject(obj) == MapObject.SNAKE:
+                    self.snake = MapCell(row_index, col_index)
+
+                col_index += 1
+
+            row_index += 1
+

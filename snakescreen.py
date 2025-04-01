@@ -14,10 +14,12 @@ class snakescreen(gamescreen):
         pass
 
     def __init__(self, display):
-        self.player = Snake(MapCell(7, 7), 3)
         self.display = display
         self.levelMap = Map()
         self.gameOver = False
+        self.levelMap.load_level("assets\\level1.json")
+        self.player = Snake(self.levelMap.snake, 3)
+
         self.generate_new_food()
 
     def update(self) -> GameState:
@@ -25,7 +27,6 @@ class snakescreen(gamescreen):
             return GameState.GAME_OVER
 
         if self.player.ate_food:
-            print("Ate food!")
             self.generate_new_food()
             self.player.ate_food = False
 
@@ -45,12 +46,10 @@ class snakescreen(gamescreen):
         self.gameOver = False
 
     def generate_new_food(self):
-        new_row = 0
-        new_col = 0
-
         while True:
             new_row = random.randint(0, self.levelMap.max_rows - 1)
             new_col = random.randint(0, self.levelMap.max_columns - 1)
+
             if self.valid_food_position(new_row, new_col):
                 break
 
@@ -60,7 +59,3 @@ class snakescreen(gamescreen):
         obj = self.levelMap.get(row, col)
 
         return obj == MapObject.NOTHING or obj == MapObject.DANGER
-
-
-
-
