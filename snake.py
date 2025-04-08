@@ -35,22 +35,22 @@ class Snake:
 
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w] and self.direction != SnakeDirection.SD_DOWN \
+        if (keys[pygame.K_w] or keys[pygame.K_UP]) and self.direction != SnakeDirection.SD_DOWN \
                 and self.direction != SnakeDirection.SD_UP:
             self.direction = SnakeDirection.SD_UP
             self.delay_left = 2
 
-        if keys[pygame.K_a] and self.direction != SnakeDirection.SD_RIGHT \
+        if (keys[pygame.K_a]  or keys[pygame.K_LEFT]) and self.direction != SnakeDirection.SD_RIGHT \
                 and self.direction != SnakeDirection.SD_LEFT:
             self.direction = SnakeDirection.SD_LEFT
             self.delay_left = 2
 
-        if keys[pygame.K_s] and self.direction != SnakeDirection.SD_DOWN \
+        if (keys[pygame.K_s]  or keys[pygame.K_DOWN]) and self.direction != SnakeDirection.SD_DOWN \
                 and self.direction != SnakeDirection.SD_UP:
             self.direction = SnakeDirection.SD_DOWN
             self.delay_left = 2
 
-        if keys[pygame.K_d] and self.direction != SnakeDirection.SD_RIGHT \
+        if (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and self.direction != SnakeDirection.SD_RIGHT \
                 and self.direction != SnakeDirection.SD_LEFT:
             self.direction = SnakeDirection.SD_RIGHT
             self.delay_left = 2
